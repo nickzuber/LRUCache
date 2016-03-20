@@ -1,0 +1,10 @@
+# VS Debug
+Debug
+
+# VS Build Files
+*.filters
+*.vcxproj
+*.suo
+*.sln
+*.sdf
+*.opensdf
