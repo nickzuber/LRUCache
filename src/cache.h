@@ -16,7 +16,7 @@ namespace _LRU_CACHE {
     class LRUCache
     {
       /// Define variable aliases and declare public members
-	    public:
+      public:
         typedef _Data                 data_type;
         typedef _Key                  key_type;
         typedef unique_ptr<_Data>     data_pointer;
@@ -41,7 +41,7 @@ namespace _LRU_CACHE {
         size_t
           size();
 
-	    private:
+      private:
         /// Declare private members
         extern size_t _size;
         extern unique_ptr< std::map > _intern_keymap;
