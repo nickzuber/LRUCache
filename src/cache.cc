@@ -1,6 +1,11 @@
-#include <iostream>
+/**
+ * 
+ * 
+ * 
+ */
 
-int main(){
-	std::cout << "test" << std::endl;
-	return EXIT_SUCCESS;
-}
+#include "cache.h"
+#include <iostream>
+#include <string>
+
+_LRU_CACHE::LRUCache<std::string, int>;
