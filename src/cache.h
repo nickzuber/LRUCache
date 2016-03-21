@@ -8,29 +8,30 @@
 #define _LRU_CACHE 
 
 #include <map>
+#include <utility>
 #include <memory>
 
 namespace _LRU_CACHE {
-  template <typename _Data, 
-            typename _Key>
+  template <typename _Key, 
+            typename _Data>
     class LRUCache
     {
-      /// Define variable aliases and declare public members
-      public:
-        typedef _Data                 data_type;
-        typedef _Key                  key_type;
-        typedef unique_ptr<_Data>     data_pointer;
-        
-        LRUCache()
-          : _size( NULL ) , _intern_keymap( new std::map< data_type > )
-          { };
 
-        LRUCache( size_t max_size )
-          : _size( max_size ) , _intern_keymap( new std::map< data_type > )
+      public:
+        typedef _Key                       key_type;
+        typedef _Data                      data_type;
+        typedef std::unique_ptr<_Data>     data_pointer;
+        
+        LRUCache( void )
+          : _size( 0 ) , _intern_keymap( new std::map< key_type , data_type > )
+          { };
+        
+        LRUCache( size_t _M_s )
+          : _size( _M_s ) , _intern_keymap( new std::map< key_type , data_type > )
           { };
 
 		    void
-          put( data_type data );
+          set( data_type data );
         
         data_type
           get( key_type key );
@@ -38,13 +39,19 @@ namespace _LRU_CACHE {
         data_type
           peek( key_type data );
 
+        bool
+          del( key_type key );
+
+        void
+          reset( void );
+
         size_t
           size();
 
       private:
-        /// Declare private members
-        extern size_t _size;
-        extern unique_ptr< std::map > _intern_keymap;
+
+        size_t _size;
+        std::unique_ptr< std::map< key_type, data_type > > _intern_keymap;
 
     };
 };
