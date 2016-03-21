@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * 
+
  * Copyright (c) 2016 Nick Zuber
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -40,31 +40,71 @@ namespace _LRU_CACHE {
         typedef _Data                      data_type;
         typedef std::unique_ptr<_Data>     data_pointer;
         
+        /**
+         * 
+         * @param
+         * @return
+         */
         LRUCache( void )
           : _size( 0 ) , _intern_keymap( new std::map< key_type , data_type > )
           { };
         
+        /**
+         * 
+         * @param
+         * @return
+         */
         LRUCache( size_t _M_s )
           : _size( _M_s ) , _intern_keymap( new std::map< key_type , data_type > )
           { };
-
+        
+        /**
+         * 
+         * @param
+         * @return
+         */
         void
           set( data_type data );
         
+        /**
+         * 
+         * @param
+         * @return
+         */
         data_type
           get( key_type key );
         
+        /**
+         * 
+         * @param
+         * @return
+         */
         data_type
           peek( key_type data );
-
+        
+        /**
+         * 
+         * @param
+         * @return
+         */
         bool
           del( key_type key );
-
+        
+        /**
+         * 
+         * @param
+         * @return
+         */
         void
           reset( void );
-
+        
+        /**
+         * Return the number of entries within the cache.
+         * @param void
+         * @return the number of entries within the cache
+         */
         size_t
-          size();
+          size( void );
 
       private:
 
