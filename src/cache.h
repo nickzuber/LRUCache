@@ -40,12 +40,31 @@ namespace _LRU_CACHE {
         typedef _Data                      data_type;
         typedef std::unique_ptr<_Data>     data_pointer;
         
+        /**
+         *  @brief  Default constructor creates empty cache.
+         */
         LRUCache( void )
           : _size( 0 ) , _intern_keymap( new std::map< key_type , data_type > )
           { };
-
+        
+        /**
+         *  @brief  Single parameter constructor sets max size.
+         *  @param  _M_s  An input for max size
+         */
         LRUCache( const size_t& _M_s )
-          : _size( _M_s ) , _intern_keymap( new std::map< key_type , data_type > )
+          : _size( _M_s ) ,
+          _intern_keymap( new std::map< key_type , data_type > )
+          { };
+        
+        /**
+         *  @brief  Double parameter constructor sets max size and dispose callback function.
+         *  @param  _M_s  An input for max size
+         *  @param  _F_p  A callback function
+         */
+        LRUCache( const size_t& _M_s , void ( *_F_p ) ( void ) )
+          : _size( _M_s ) , 
+          _intern_keymap( new std::map< key_type , data_type > ) , 
+          _dispose_func( _F_p )
           { };
 
         void
@@ -69,6 +88,7 @@ namespace _LRU_CACHE {
       private:
         size_t _size;
         std::unique_ptr< std::map< key_type, data_type > > _intern_keymap;
+        void ( *_dispose_func ) ( void );
 
     };
 };
