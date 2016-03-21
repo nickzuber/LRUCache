@@ -28,6 +28,8 @@
 #include <map>
 #include <utility>
 #include <memory>
+#include <iostream> /* @TESTING */
+#include <string> /* @TESTING */
 
 namespace _LRU_CACHE {
   template <typename _Key, 
@@ -38,6 +40,7 @@ namespace _LRU_CACHE {
       public:
         typedef _Key                       key_type;
         typedef _Data                      data_type;
+        typedef std::unique_ptr<_Key>      key_pointer;
         typedef std::unique_ptr<_Data>     data_pointer;
         
         /**
@@ -45,7 +48,7 @@ namespace _LRU_CACHE {
          */
         LRUCache( void )
           : _size( 0 ) ,
-          _intern_keymap( new std::map< key_type , data_type > )
+          _intern_keymap( new std::map< key_type , data_pointer > ) ,
           _dispose_func( NULL )
           { };
         
@@ -55,7 +58,7 @@ namespace _LRU_CACHE {
          */
         LRUCache( const size_t& _M_s )
           : _size( _M_s ) ,
-          _intern_keymap( new std::map< key_type , data_type > )
+          _intern_keymap( new std::map< key_type , data_pointer > ) ,
           _dispose_func( NULL )
           { };
         
@@ -66,21 +69,27 @@ namespace _LRU_CACHE {
          */
         LRUCache( const size_t& _M_s , void ( *_F_p ) ( void ) )
           : _size( _M_s ) , 
-          _intern_keymap( new std::map< key_type , data_type > ) , 
+          _intern_keymap( new std::map< key_type , data_pointer > ) , 
           _dispose_func( _F_p )
           { };
 
         void
-          set( const data_type& data );
+          set( const key_type& _K_t , const data_type& _D_t )
+          {
+            this->_intern_keymap.get()->insert( std::make_pair( _K_t , data_pointer( new data_type( _D_t ) ) ) );
+            
+            
+            std::cout << *this->_intern_keymap.get()->at(_K_t) << std::endl;
+          }
 
         data_type
-          get( const key_type& key ) const;
+          get( const key_type& _K_t ) const;
 
         data_type
-          peek( const key_type& data ) const;
+          peek( const key_type& _D_t ) const;
 
         void
-          del( const key_type& key );
+          del( const key_type& _K_t );
 
         void
           reset( void );
@@ -90,7 +99,7 @@ namespace _LRU_CACHE {
 
       private:
         size_t _size;
-        std::unique_ptr< std::map< key_type, data_type > > _intern_keymap;
+        std::unique_ptr< std::map< key_type, data_pointer > > _intern_keymap;
         void ( *_dispose_func ) ( void );
 
     };

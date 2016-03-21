@@ -23,10 +23,13 @@
  */
 
 #include "cache.h"
+#include <iostream>
 
-  template <typename _Key , typename _Data>
-    void
-      LRUCache<_Key, _Data>::set( const _Data& data )
-      {
-        *( this->_intern_keymap->get() );
-      }
+
+  //template < typename _Key , typename _Data >
+  //  void
+  //    LRUCache< _Key , _Data >::set( const _Key& key , const _Data& data )
+  //    {
+  //      //this->_intern_keymap;
+  //      std::cout << key << std::endl;
+  //    };
