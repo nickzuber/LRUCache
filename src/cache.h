@@ -44,7 +44,9 @@ namespace _LRU_CACHE {
          *  @brief  Default constructor creates empty cache.
          */
         LRUCache( void )
-          : _size( 0 ) , _intern_keymap( new std::map< key_type , data_type > )
+          : _size( 0 ) ,
+          _intern_keymap( new std::map< key_type , data_type > )
+          _dispose_func( NULL )
           { };
         
         /**
@@ -54,6 +56,7 @@ namespace _LRU_CACHE {
         LRUCache( const size_t& _M_s )
           : _size( _M_s ) ,
           _intern_keymap( new std::map< key_type , data_type > )
+          _dispose_func( NULL )
           { };
         
         /**
