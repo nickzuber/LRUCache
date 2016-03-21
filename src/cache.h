@@ -26,8 +26,7 @@
 #define _LRU_CACHE 
 
 #include <map>
-#include <utility>
-#include <memory>
+#include "dataObject.h"
 #include <iostream> /* @TESTING */
 #include <string> /* @TESTING */
 
@@ -38,18 +37,22 @@ namespace _LRU_CACHE {
     {
 
       public:
-        typedef _Key                       key_type;
-        typedef _Data                      data_type;
-        typedef std::unique_ptr<_Key>      key_pointer;
-        typedef std::unique_ptr<_Data>     data_pointer;
+        typedef _Key                                    key_type;
+        typedef _Data                                   data_type;
+        typedef std::unique_ptr<_Key>                   key_ptr;
+        typedef std::unique_ptr<_Data>                  data_ptr;
+        typedef Data_Object<_Data>                      data_object;
+        typedef std::unique_ptr<Data_Object<_Data>>     data_object_ptr;
         
         /**
          *  @brief  Default constructor creates empty cache.
          */
         LRUCache( void )
           : _size( 0 ) ,
-          _intern_keymap( new std::map< key_type , data_pointer > ) ,
-          _dispose_func( NULL )
+          _intern_keymap( new std::map< key_type , data_object_ptr > ) ,
+          _dispose_func( NULL ) ,
+          _head( NULL ) ,
+          _tail( NULL )
           { };
         
         /**
@@ -58,8 +61,10 @@ namespace _LRU_CACHE {
          */
         LRUCache( const size_t& _M_s )
           : _size( _M_s ) ,
-          _intern_keymap( new std::map< key_type , data_pointer > ) ,
-          _dispose_func( NULL )
+          _intern_keymap( new std::map< key_type , data_object_ptr > ) ,
+          _dispose_func( NULL ) ,
+          _head( NULL ) ,
+          _tail( NULL )
           { };
         
         /**
@@ -69,17 +74,32 @@ namespace _LRU_CACHE {
          */
         LRUCache( const size_t& _M_s , void ( *_F_p ) ( void ) )
           : _size( _M_s ) , 
-          _intern_keymap( new std::map< key_type , data_pointer > ) , 
-          _dispose_func( _F_p )
+          _intern_keymap( new std::map< key_type , data_object_ptr > ) , 
+          _dispose_func( _F_p ) ,
+          _head( NULL ) ,
+          _tail( NULL )
           { };
 
         void
           set( const key_type& _K_t , const data_type& _D_t )
           {
-            this->_intern_keymap.get()->insert( std::make_pair( _K_t , data_pointer( new data_type( _D_t ) ) ) );
-            
-            
-            std::cout << *this->_intern_keymap.get()->at(_K_t) << std::endl;
+            // Create new element with input data
+            data_object _Do_t( _D_t );
+
+            // Check if tail is set.. if not configure routine
+              // Set head
+              // Set tail
+
+            // Check if cache is full.. if so call del() and continue
+
+            // Update new entry as newest element
+              // A[head]->newer = new entry
+              // head = new entry.KEY
+
+            // Insert new element into internal map
+            this->_intern_keymap.get()->insert( std::make_pair( _K_t , data_object_ptr( new data_object( _Do_t ) ) ) );
+            // @TEST  return key value
+            std::cout << *this->_intern_keymap.get()->at(_K_t)->get_data() << std::endl;
           }
 
         data_type
@@ -99,8 +119,10 @@ namespace _LRU_CACHE {
 
       private:
         size_t _size;
-        std::unique_ptr< std::map< key_type, data_pointer > > _intern_keymap;
+        std::unique_ptr< std::map< key_type, data_object_ptr > > _intern_keymap;
         void ( *_dispose_func ) ( void );
+        key_ptr _head;
+        key_ptr _tail;
 
     };
 };
