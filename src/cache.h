@@ -67,7 +67,6 @@ namespace _LRU_CACHE {
           size( void ) const;
 
       private:
-
         size_t _size;
         std::unique_ptr< std::map< key_type, data_type > > _intern_keymap;
 
