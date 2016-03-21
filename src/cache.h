@@ -30,7 +30,7 @@ namespace _LRU_CACHE {
           : _size( _M_s ) , _intern_keymap( new std::map< key_type , data_type > )
           { };
 
-		    void
+        void
           set( data_type data );
         
         data_type
