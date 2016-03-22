@@ -8,12 +8,40 @@ void callbackFunction(){
 }
 
 int main(){
-  _LRU_CACHE::LRUCache<int, std::string> cache(10);
+  using namespace std;
 
-  int key = 21;
-  std::string val = "some value";
+  _LRU_CACHE::LRUCache<int, string> cache(5);
+  
+  cache.set(90, "one");
+  cache.set(14, "two");
+  cache.set(27, "three");
+  cache.set(33, "four");
+  cache.set(14, "five");
+  cache.set(35, "six");
+  cache.set(65, "seven");
+  
+  // peek()
+  if( cache.peek(4) != nullptr )
+    cout << "Key 4: " << *cache.peek(4) << endl;
+  else
+    cout << "Key 4: " << "not found" << endl;
+  cout << "-------------------------" << endl;
 
-  cache.set(key, val);
+  // size()
+  cout << "Size of cache: " << cache.size() << endl;
+  cout << "-------------------------" << endl;
+
+  cache.print_cache();
+  cout << "-------------------------" << endl;
+
+  cache.set(37, "eight");
+
+  cache.print_cache();
+  cout << "-------------------------" << endl;
+
+  // reset()
+  cache.reset();
+  cout << "Size of cache: " << cache.size() << endl;
 
   return EXIT_SUCCESS;
 }

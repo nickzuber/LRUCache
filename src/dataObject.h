@@ -29,22 +29,26 @@
 #include <memory>
 
 namespace _LRU_CACHE {
-  template <typename _Data>
+  template <typename _Data ,
+            typename _Key>
     class Data_Object
     {
 
       public:
+        // We use raw pointers here because they're already encased in a smart pointer in LRU_CACHE
         typedef _Data                 data_type;
         typedef _Data*                data_ptr;
         typedef Data_Object*          self_ptr;
+        typedef _Key                  key_type;
+        typedef _Key*                 key_ptr;
 
         /**
          *  @brief  Default constructor creates empty object.
          */
         Data_Object( void )
-          : _data( NULL ) ,
-          _older( NULL ) ,
-          _newer( NULL )
+          : _data( nullptr ) ,
+          _older( nullptr ) ,
+          _newer( nullptr )
           { };
 
         /**
@@ -53,8 +57,8 @@ namespace _LRU_CACHE {
          */
         Data_Object( data_type _D_t )
           : _data( data_ptr( new data_type( _D_t ) ) ) ,
-          _older( NULL ) ,
-          _newer( NULL )
+          _older( nullptr ) ,
+          _newer( nullptr )
           { };
 
         void
@@ -64,15 +68,15 @@ namespace _LRU_CACHE {
           }
 
         void
-          set_newer( const data_type& _D_t )
+          set_newer( const key_ptr& _K_p )
           {
-            this->_newer = self_ptr( new Data_Object( _S_p ) );
+            this->_newer = key_ptr( _K_p );
           }
 
         void
-          set_older( const self_ptr& _S_p )
+          set_older( const key_ptr& _K_p )
           {
-            this->_older = self_ptr( new Data_Object( _S_p ) );
+            this->_older = key_ptr( _K_p );
           }
 
         data_ptr
@@ -81,10 +85,22 @@ namespace _LRU_CACHE {
             return this->_data;
           }
 
+        key_ptr
+          get_newer( void ) const
+          {
+            return this->_newer;
+          }
+
+        key_ptr
+          get_older( void ) const
+          {
+            return this->_older;
+          }
+
       private:
         data_ptr _data;
-        self_ptr _older; /* May not need */
-        self_ptr _newer;
+        key_ptr _older;
+        key_ptr _newer;
     };
 };
 
