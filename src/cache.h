@@ -143,7 +143,10 @@ namespace _LRU_CACHE {
         data_type*
           get( const key_type& _K_t ) const
           {
-            return nullptr;
+            // update MRA
+            return this->_intern_keymap.get()->find( _K_t ) != this->_intern_keymap.get()->end()
+              ? this->_intern_keymap.get()->at( _K_t )->get_data()
+              : nullptr;
           };
 
         /**
