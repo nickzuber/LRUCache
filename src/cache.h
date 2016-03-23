@@ -99,12 +99,12 @@ namespace _LRU_CACHE {
               if( _exists != this->_intern_keymap.get()->end() )
               {
                 _exists->second->set_data( _D_t );
-                /*
                 this->_intern_keymap.get()->at( *_exists->second->get_older() )->set_newer( _exists->second->get_newer() );
+                this->_intern_keymap.get()->at( *_exists->second->get_newer() )->set_older( _exists->second->get_older() );
                 _exists->second->set_newer( nullptr );
                 _exists->second->set_older( new key_type( *this->_head ) );
+                this->_intern_keymap.get()->at( *this->_head.get() )->set_newer( new key_type(_K_t) );
                 this->_head = key_ptr( new key_type( _K_t ) );
-                */
               }
               // Create new item if it doesn't already exist
               else
@@ -144,15 +144,17 @@ namespace _LRU_CACHE {
          *  @return  Returns the item value at given key.
          */
         data_type*
-          get( const key_type& _K_t ) const
+          get( const key_type& _K_t )
           {
             // update MRA
             auto _T_e = this->_intern_keymap.get()->find( _K_t );
             if( _T_e != this->_intern_keymap.get()->end() )
             {
               this->_intern_keymap.get()->at( *_T_e->second->get_older() )->set_newer( _T_e->second->get_newer() );
+              this->_intern_keymap.get()->at( *_T_e->second->get_newer() )->set_older( _T_e->second->get_older() );
               _T_e->second->set_newer( nullptr );
               _T_e->second->set_older( new key_type( *this->_head ) );
+              this->_intern_keymap.get()->at( *this->_head.get() )->set_newer( new key_type(_K_t) );
               this->_head = key_ptr( new key_type( _K_t ) );
               return this->_intern_keymap.get()->at( _K_t )->get_data();
             }
@@ -167,7 +169,7 @@ namespace _LRU_CACHE {
          *  @return  Returns a pointer to the value of the given key or nullptr if not found.
          */
         data_type*
-          peek( const key_type& _K_t ) const
+          peek( const key_type& _K_t )
           {
             return this->_intern_keymap.get()->find( _K_t ) != this->_intern_keymap.get()->end()
               ? this->_intern_keymap.get()->at( _K_t )->get_data()
