@@ -88,13 +88,11 @@ namespace _LRU_CACHE {
         void
           set( const key_type& _K_t , const data_type& _D_t )
           {
-            // Purge if cache exceeds capacity
             if( this->_intern_keymap.get()->size() >= this->_max_size )
             {
               this->purge();
             }
             try{
-              // Update item if already exists
               auto _exists = this->_intern_keymap.get()->find( _K_t );
               if( _exists != this->_intern_keymap.get()->end() )
               {
@@ -106,24 +104,21 @@ namespace _LRU_CACHE {
                 this->_intern_keymap.get()->at( *this->_head.get() )->set_newer( new key_type(_K_t) );
                 this->_head = key_ptr( new key_type( _K_t ) );
               }
-              // Create new item if it doesn't already exist
               else
               {
                 data_object _Do_t( _D_t );
                 this->_intern_keymap.get()->insert( std::make_pair( _K_t , data_object_ptr( new data_object( _Do_t ) ) ) );
             
-                // If tail isn't set, set it (first entry)
                 if( this->_tail == nullptr && this->_head == nullptr )
                 {
                   this->_head = key_ptr( new key_type( _K_t ) );
                   this->_tail = key_ptr( new key_type( _K_t ) );
                 }
-                // If tail is set, update head with new entry
                 else if( this->_tail != nullptr && this->_head != nullptr )
                 {
-                  this->_intern_keymap.get()->at( _K_t )->set_older( new key_type( *this->_head.get() ) ); // nodeToAdd.older = this.head
-                  this->_intern_keymap.get()->at( *this->_head.get() )->set_newer( new key_type( _K_t ) ); // this.head->newer = nodeToAdd
-                  this->_head = key_ptr( new key_type( _K_t ) ); // this.head = nodeToAdd 
+                  this->_intern_keymap.get()->at( _K_t )->set_older( new key_type( *this->_head.get() ) );
+                  this->_intern_keymap.get()->at( *this->_head.get() )->set_newer( new key_type( _K_t ) );
+                  this->_head = key_ptr( new key_type( _K_t ) );
                 }
               
                 else
@@ -146,7 +141,6 @@ namespace _LRU_CACHE {
         data_type*
           get( const key_type& _K_t )
           {
-            // update MRA
             auto _T_e = this->_intern_keymap.get()->find( _K_t );
             if( _T_e != this->_intern_keymap.get()->end() )
             {
