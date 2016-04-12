@@ -17,11 +17,13 @@ int main(){
   cache.set(3, "three");
   cache.set(4, "four");
   cache.set(5, "five");
+  cache.set(6, "six");
+  cache.set(7, "seven");
 
   cache.print_cache();
   cout << "-------------------------" << endl;
 
-  cache.set(1, "new one");
+  cache.set(4, "new four");
 
   //cache.set(5, "new one");
 

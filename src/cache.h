@@ -97,12 +97,13 @@ namespace _LRU_CACHE {
               if( _exists != this->_intern_keymap.get()->end() )
               {
                 _exists->second->set_data( _D_t );
+                /** errors are being thrown if older / newer is null I think */
                 this->_intern_keymap.get()->at( *_exists->second->get_older() )->set_newer( _exists->second->get_newer() );
-                this->_intern_keymap.get()->at( *_exists->second->get_newer() )->set_older( _exists->second->get_older() );
-                _exists->second->set_newer( nullptr );
-                _exists->second->set_older( new key_type( *this->_head ) );
-                this->_intern_keymap.get()->at( *this->_head.get() )->set_newer( new key_type(_K_t) );
-                this->_head = key_ptr( new key_type( _K_t ) );
+                //this->_intern_keymap.get()->at( *_exists->second->get_newer() )->set_older( _exists->second->get_older() );
+                //_exists->second->set_newer( nullptr );
+                //_exists->second->set_older( new key_type( *this->_head ) );
+                //this->_intern_keymap.get()->at( *this->_head.get() )->set_newer( new key_type(_K_t) );
+                //this->_head = key_ptr( new key_type( _K_t ) );
               }
               else
               {
@@ -237,6 +238,7 @@ namespace _LRU_CACHE {
             this->_intern_keymap.get()->erase( *this->_tail );
             this->_tail = key_ptr ( new key_type( *_N_t.get() ) );
             this->_intern_keymap.get()->at( *this->_tail.get() )->set_older( nullptr );
+            //this->_dispose_func();
           }
 
     };

@@ -1,5 +1,6 @@
 # VS Debug
 Debug
+.vs
 
 # VS Build Files
 *.filters
@@ -7,4 +8,5 @@ Debug
 *.suo
 *.sln
 *.sdf
-*.opensdf
+*.opendb
+*.db
